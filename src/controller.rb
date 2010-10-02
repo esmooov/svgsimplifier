@@ -1,4 +1,4 @@
 # Controller
 
-module Controller
+class Controller
 end
