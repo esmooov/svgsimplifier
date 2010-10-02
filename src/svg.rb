@@ -67,11 +67,6 @@ class SVG
 
 			stack << f
 
-			if f =~ /z/
-				stack = ['z']
-				do_something_with_stack(stack)
-			end
-
 		end
 
 	end
