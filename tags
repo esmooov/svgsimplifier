@@ -13,6 +13,9 @@ SVGPoint	./src/svg_point.rb	/^class SVGPoint$/;"	c
 initialize	./src/point.rb	/^	def initialize(x, y)$/;"	f	class:Point
 initialize	./src/svg.rb	/^	def initialize(source) $/;"	f	class:SVG
 initialize	./src/svg_point.rb	/^	def initialize(type, p = Point.new(nil, nil), r1 = Point.new(nil, nil), r2 = Point.new(nil, nil), keep = false)$/;"	f	class:SVGPoint
+to_path_array	./src/svg.rb	/^	def to_path_array(path)$/;"	f
+to_path_point_array	./src/svg.rb	/^	def to_path_point_array(path)$/;"	f
 to_s	./src/point.rb	/^	def to_s$/;"	f	class:Point
 to_s	./src/svg.rb	/^	def to_s$/;"	f
 to_s	./src/svg_point.rb	/^	def to_s$/;"	f	class:SVGPoint
+to_text_string_with_points	./src/svg.rb	/^	def to_text_string_with_points$/;"	f
