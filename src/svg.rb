@@ -50,6 +50,9 @@ class SVG
 	def to_path_point_array(path)
 
 		path.gsub!(/(?=[^\s]|^)([A-Za-z])(?=$|[^\s])/){|q| " #{$1} "}
+		path.gsub!(/  /, ' ')
+		
+		#puts path
 
 		q = path.split(/ /);
 
@@ -63,11 +66,12 @@ class SVG
 			end
 
 			stack << f
-		end
 
-		if stack.length > 0 && f =~ /[MCLSz]/
-			do_something_with_stack(stack)
-			stack = []
+			if f =~ /z/
+				stack = ['z']
+				do_something_with_stack(stack)
+			end
+
 		end
 
 	end
