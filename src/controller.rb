@@ -1,0 +1,4 @@
+# Controller
+
+module Controller
+end
