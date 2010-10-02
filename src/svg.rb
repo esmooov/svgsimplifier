@@ -6,7 +6,7 @@ require 'crack'
 class SVG
 
 	def initialize(source) 
-		
+
 		str = ""
 		begin
 			File.open(source,"r") do |f|
@@ -22,17 +22,17 @@ class SVG
 	end
 
 	def to_s
-		
+
 		@svg.inspect
 
 	end
 
 	def to_text_string_with_points
-		
+
 		@svg["svg"]["path"].each do |dist|
-			
+
 			dist["array_of_paths"] = to_path_array(dist["d"])
-		
+			dist["array_of_path_points"] = []
 			dist["array_of_paths"].each do |path|				
 				dist["array_of_path_points"] << to_path_point_array(path)	
 			end
@@ -42,17 +42,40 @@ class SVG
 	end
 
 	def to_path_array(path)
-		#M 245,459 L 206,641 C 270,728 333,815 397,902 C 397,902 398,902 398,901 L 402,900 L 405,9
 
-		path.scan(/([MCL].+z)/)
-		
+		path.scan(/[MCL].+z/).flatten()
+
 	end
-	
+
 	def to_path_point_array(path)
-	
-	  path.gsub!(/(?=[^\s]|^)([A-Za-z])(?=$|[^\s])/){|q| " #{$1} "}
-	  
-	
+
+		path.gsub!(/(?=[^\s]|^)([A-Za-z])(?=$|[^\s])/){|q| " #{$1} "}
+
+		q = path.split(/ /);
+
+		stack = []
+
+		q.each do |f|
+
+			if stack.length > 0 && f =~ /[MCLSz]/
+				do_something_with_stack(stack)
+				stack = []
+			end
+
+			stack << f
+		end
+
+		if stack.length > 0 && f =~ /[MCLSz]/
+			do_something_with_stack(stack)
+			stack = []
+		end
+
+	end
+
+	def do_something_with_stack(stack)
+
+		puts stack.inspect
+
 	end
 
 end
