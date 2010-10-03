@@ -1,10 +1,13 @@
 # Ruby internal object representation of an SVG diagram
 require 'svg_point'
+require 'rubygems'
+require 'crack'
 
 class SVG
 
 	def initialize(source)
 		str = ""
+
 		begin
 			File.open(source,"r") do |f|
 				str = f.read
