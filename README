@@ -1,2 +1,4 @@
-This file will actually contain something useful soon. Very soon.
-
+This library will have the ability to be given a SVG file, and it will convert
+any cubic bezier curves into line segments (the accuracy will be a variable)
+and it will then simplify the whole path getting rid of any useless points,
+while respecting a threshold. 
