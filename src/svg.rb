@@ -1,7 +1,5 @@
 # Ruby internal object representation of an SVG diagram
-
-require 'rubygems'
-require 'crack'
+require 'svg_point'
 
 class SVG
 
@@ -27,19 +25,30 @@ class SVG
 
 	end
 
-	def to_text_string_with_points
+	def convert
 
 		@svg["svg"]["path"].each do |dist|
 
 			dist["array_of_paths"] = to_path_array(dist["d"])
 			dist["array_of_path_points"] = []
-			dist["array_of_paths"].each do |path|				
-				dist["array_of_path_points"] << to_path_point_array(path)	
+			dist["array_of_paths"].collect! do |path|				
+				to_path_point_array(path)	
 			end
 
 		end
 
 	end
+
+private
+
+    def curves_to_lines(point_array,resolution)
+        
+       point_array.collect! do |point|
+
+
+       end
+
+    end
 
 	def to_path_array(path)
 
@@ -48,20 +57,20 @@ class SVG
 	end
 
 	def to_path_point_array(path)
-
+	
 		path.gsub!(/(?=[^\s]|^)([A-Za-z])(?=$|[^\s])/){|q| " #{$1} "}
-		path.gsub!(/  /, ' ')
 		
-		#puts path
+		path.gsub!(/  /, ' ')
 
-		q = path.split(/ /);
+		q = path.split(/ /).reject{|q| q === ""};
 
 		stack = []
+		points = []
 
 		q.each do |f|
 
 			if stack.length > 0 && f =~ /[MCLSz]/
-				do_something_with_stack(stack)
+				points << to_svg(stack)
 				stack = []
 			end
 
@@ -69,11 +78,17 @@ class SVG
 
 		end
 
+		points
+
 	end
 
-	def do_something_with_stack(stack)
-
-		puts stack.inspect
+	def to_svg(stack)
+	
+		if stack[0] == "C"
+		a = SVGPoint.new(stack[0],Point.new(stack[3]),Point.new(stack[1]),Point.new(stack[2]))
+		else
+		a = SVGPoint.new(stack[0],Point.new(stack[1]))
+		end
 
 	end
 

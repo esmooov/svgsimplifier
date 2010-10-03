@@ -4,7 +4,7 @@ require 'point'
 
 class SVGPoint
 
-	def initialize(type, p = Point.new(nil, nil), r1 = Point.new(nil, nil), r2 = Point.new(nil, nil), keep = false)
+	def initialize(type, p = Point.new(nil, nil), r1 = Point.new(nil, nil), r2 = Point.new(nil, nil), keep = true)
 		
 		@type = type
 		@p = p
