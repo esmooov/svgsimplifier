@@ -10,13 +10,14 @@ LineSimplifier	./src/line_simplifier.rb	/^class LineSimplifier$/;"	c
 Point	./src/point.rb	/^class Point$/;"	c
 SVG	./src/svg.rb	/^class SVG$/;"	c
 SVGPoint	./src/svg_point.rb	/^class SVGPoint$/;"	c
-do_something_with_stack	./src/svg.rb	/^	def do_something_with_stack(stack)$/;"	f
-initialize	./src/point.rb	/^	def initialize(x, y)$/;"	f	class:Point
-initialize	./src/svg.rb	/^	def initialize(source) $/;"	f	class:SVG
+convert	./src/svg.rb	/^	def convert$/;"	f
+curves_to_lines	./src/svg.rb	/^	def curves_to_lines(point_array,resolution)$/;"	f
+initialize	./src/point.rb	/^	def initialize(x, y=nil)$/;"	f	class:Point
+initialize	./src/svg.rb	/^	def initialize(source)$/;"	f	class:SVG
 initialize	./src/svg_point.rb	/^	def initialize(type, p = Point.new(nil, nil), r1 = Point.new(nil, nil), r2 = Point.new(nil, nil), keep = false)		$/;"	f	class:SVGPoint
 to_path_array	./src/svg.rb	/^	def to_path_array(path)$/;"	f
 to_path_point_array	./src/svg.rb	/^	def to_path_point_array(path)$/;"	f
 to_s	./src/point.rb	/^	def to_s$/;"	f	class:Point
 to_s	./src/svg.rb	/^	def to_s$/;"	f
 to_s	./src/svg_point.rb	/^	def to_s$/;"	f	class:SVGPoint
-to_text_string_with_points	./src/svg.rb	/^	def to_text_string_with_points$/;"	f
+to_svg	./src/svg.rb	/^	def to_svg(stack)$/;"	f
