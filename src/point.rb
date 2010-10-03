@@ -2,9 +2,14 @@
 
 class Point
 
-	def initialize(x, y)
-		@x = x
-		@y = y
+	def initialize(x, y=nil)
+		if y == nil
+			@x = (x||"").split(",")[0]
+			@y = (x||"").split(",")[1]
+		else
+			@x = x
+			@y = y
+		end
 	end
 
 	def to_s
