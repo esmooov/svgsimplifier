@@ -45,31 +45,41 @@ class SVG
 #private
 
     def curves_to_lines(point_array,resolution)
-       
-       output = []
-       point_array.enum_with_index.collect do |point,index|
+               
+        output_array= []
+        point_array.each_with_index do |point,index|
 
-           if point.type == "C"
+            if point.type == "C"
 
-               step = 1/resolution
+                step = 1/resolution
+                iter = 1
+                while iter <= resolution
+
+                    line_point = bez_to_val(point,point_array[index-1],step*iter)
+                    output_array << SVGPoint.new("L",line_point)
+                    iter += 1
+
+                end
 
 
-           else
+            else
 
-               output << point
+               output_array << point
 
-           end
+            end
 
-       end
+        end
+
+        output_array
 
     end
 
     def bez_to_val(point,previous,t)
-
+        
         x = previous.p.x + 3*t*(point.r1.x-previous.p.x)+3*t**2*(previous.p.x+point.r2.x-(2*point.r1.x))+t**3*(point.p.x-previous.p.x+3*point.r1.x-3*point.r2.x)
         y = previous.p.y + 3*t*(point.r1.y-previous.p.y)+3*t**2*(previous.p.y+point.r2.y-(2*point.r1.y))+t**3*(point.p.y-previous.p.y+3*point.r1.y-3*point.r2.y)
         new_point = Point.new(x,y)
-        puts x,y
+        new_point
 
     end
 
