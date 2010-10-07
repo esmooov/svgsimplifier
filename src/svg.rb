@@ -1,5 +1,8 @@
 # Ruby internal object representation of an SVG diagram
+require 'rubygems'
 require 'svg_point'
+require 'enumerator'
+require 'crack'
 
 class SVG
 
@@ -39,14 +42,34 @@ class SVG
 
 	end
 
-private
+#private
 
     def curves_to_lines(point_array,resolution)
-        
-       point_array.collect! do |point|
+       
+       output = []
+       point_array.enum_with_index.collect do |point,index|
 
+           if point.type == "C"
+
+               step = 1/resolution
+
+
+           else
+
+               output << point
+
+           end
 
        end
+
+    end
+
+    def bez_to_val(point,previous,t)
+
+        x = previous.p.x + 3*t*(point.r1.x-previous.p.x)+3*t**2*(previous.p.x+point.r2.x-(2*point.r1.x))+t**3*(point.p.x-previous.p.x+3*point.r1.x-3*point.r2.x)
+        y = previous.p.y + 3*t*(point.r1.y-previous.p.y)+3*t**2*(previous.p.y+point.r2.y-(2*point.r1.y))+t**3*(point.p.y-previous.p.y+3*point.r1.y-3*point.r2.y)
+        new_point = Point.new(x,y)
+        puts x,y
 
     end
 
