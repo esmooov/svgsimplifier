@@ -6,52 +6,52 @@ require 'crack'
 
 class SVG
 
-	def initialize(source) 
+    def initialize(source) 
 
-		str = ""
-		begin
-			File.open(source,"r") do |f|
-				str = f.read
-			end
-		rescue
-			str = source
-		end
+        str = ""
+        begin
+            File.open(source,"r") do |f|
+                str = f.read
+            end
+        rescue
+            str = source
+        end
 
-		@svg = Crack::XML.parse(str)
-		@paths
+        @svg = Crack::XML.parse(str)
+        @paths
 
-	end
+    end
 
-	def to_s
+    def to_s
 
-		@svg.inspect
+        @svg.inspect
 
-	end
+    end
 
-	def convert
+    def convert
 
-		@svg["svg"]["path"].each do |dist|
+        @svg["svg"]["path"].each do |dist|
 
-			dist["array_of_paths"] = to_path_array(dist["d"])
-			dist["array_of_path_points"] = []
-			dist["array_of_paths"].collect! do |path|				
-				to_path_point_array(path)	
-			end
+            dist["array_of_paths"] = to_path_array(dist["d"])
+            dist["array_of_path_points"] = []
+            dist["array_of_paths"].collect! do |path|				
+                to_path_point_array(path)	
+            end
 
-		end
+        end
 
-	end
+    end
 
-#private
+    #private
 
     def curves_to_lines(point_array,resolution)
-               
+
         output_array= []
         point_array.each_with_index do |point,index|
 
             if point.type == "C"
 
-                step = 1/resolution
+                step = 1/resolution.to_f
                 iter = 1
                 while iter <= resolution
 
@@ -64,7 +64,7 @@ class SVG
 
             else
 
-               output_array << point
+                output_array << point
 
             end
 
@@ -75,7 +75,7 @@ class SVG
     end
 
     def bez_to_val(point,previous,t)
-        
+
         x = previous.p.x + 3*t*(point.r1.x-previous.p.x)+3*t**2*(previous.p.x+point.r2.x-(2*point.r1.x))+t**3*(point.p.x-previous.p.x+3*point.r1.x-3*point.r2.x)
         y = previous.p.y + 3*t*(point.r1.y-previous.p.y)+3*t**2*(previous.p.y+point.r2.y-(2*point.r1.y))+t**3*(point.p.y-previous.p.y+3*point.r1.y-3*point.r2.y)
         new_point = Point.new(x,y)
@@ -83,46 +83,64 @@ class SVG
 
     end
 
-	def to_path_array(path)
+    def calculate_distance(point_one,point_two)
+        Math.sqrt((point_two.y-point_one.y)**2+(point_two.x-point_one.x)**2)
+    end
+    def convert_to_line(point_one,point_two)
+        slope = (point_two.y-point_one.y).to_f/(point_two.x-point_one.x).to_f
+        offset = point_one.y-(point_one.x*slope)
+        {:slope=>slope,:offset=>offset}
+    end
+    def calculate_distance_from_line(endpoint_one,endpoint_two,inspection_point)
+        line = self.convert_to_line(endpoint_one,endpoint_two)
+        new_slope = -1*(1/line[:slope].to_f)
+        new_offset = inspection_point.y-(inspection_point.x*new_slope)
+        x_intersection = (new_offset-line[:offset]).to_f/(line[:slope]-new_slope).to_f
+        y_intersection = x_intersection*new_slope + new_offset
+        intersection_point = Point.new(x_intersection,y_intersection)
+        calculate_distance(intersection_point,inspection_point)
+    end
 
-		path.scan(/[MCL].+z/).flatten()
+    def to_path_array(path)
 
-	end
+        path.scan(/[MCL].+z/).flatten()
 
-	def to_path_point_array(path)
-	
-		path.gsub!(/(?=[^\s]|^)([A-Za-z])(?=$|[^\s])/){|q| " #{$1} "}
-		
-		path.gsub!(/  /, ' ')
+    end
 
-		q = path.split(/ /).reject{|q| q === ""};
+    def to_path_point_array(path)
 
-		stack = []
-		points = []
+        path.gsub!(/(?=[^\s]|^)([A-Za-z])(?=$|[^\s])/){|q| " #{$1} "}
 
-		q.each do |f|
+        path.gsub!(/  /, ' ')
 
-			if stack.length > 0 && f =~ /[MCLSz]/
-				points << to_svg(stack)
-				stack = []
-			end
+        q = path.split(/ /).reject{|q| q === ""};
 
-			stack << f
+        stack = []
+        points = []
 
-		end
+        q.each do |f|
 
-		points
+            if stack.length > 0 && f =~ /[MCLSz]/
+                points << to_svg(stack)
+                stack = []
+            end
 
-	end
+            stack << f
 
-	def to_svg(stack)
-	
-		if stack[0] == "C"
-		a = SVGPoint.new(stack[0],Point.new(stack[3]),Point.new(stack[1]),Point.new(stack[2]))
-		else
-		a = SVGPoint.new(stack[0],Point.new(stack[1]))
-		end
+        end
 
-	end
+        points
+
+    end
+
+    def to_svg(stack)
+
+        if stack[0] == "C"
+            a = SVGPoint.new(stack[0],Point.new(stack[3]),Point.new(stack[1]),Point.new(stack[2]))
+        else
+            a = SVGPoint.new(stack[0],Point.new(stack[1]))
+        end
+
+    end
 
 end
