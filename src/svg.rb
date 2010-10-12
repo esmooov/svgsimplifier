@@ -1,4 +1,4 @@
-j Ruby internal object representation of an SVG diagram
+# Ruby internal object representation of an SVG diagram
 require 'rubygems'
 require 'svg_point'
 require 'enumerator'
