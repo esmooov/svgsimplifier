@@ -6,6 +6,7 @@ require 'crack'
 
 class SVG
 
+    attr_reader :svg
     def initialize(source) 
 
         str = ""
@@ -13,12 +14,13 @@ class SVG
             File.open(source,"r") do |f|
                 str = f.read
             end
+            @svg = Crack::XML.parse(str)
         rescue
             str = source
+            @svg = {} 
+            @svg["svg"] = {}
+            @svg["svg"]["path"] = [{"d"=>str}]
         end
-
-        @svg = Crack::XML.parse(str)
-        @paths
 
     end
 
@@ -29,49 +31,49 @@ class SVG
     end
 
     def convert
-
         @svg["svg"]["path"].each do |dist|
 
             dist["array_of_paths"] = to_path_array(dist["d"])
-            dist["array_of_path_points"] = []
             dist["array_of_paths"].collect! do |path|				
                 to_path_point_array(path)	
             end
-
         end
-
     end
 
+    def decurve 
+        @svg["svg"]["path"].each do |dist|
+           dist["line_array"] = []
+           dist["array_of_paths"].each do |path|
+               dist["line_array"].push(convert_to_lines(path,3)) 
+           end
+        end
+    end
+    def reduce
+        @svg["svg"]["path"].each do |dist|
+            dist["final_line_array"] = []
+            dist["line_array"].each do |path|
+
+            end
+        end
+    end
     #private
 
-    def curves_to_lines(point_array,resolution)
-
+    def convert_to_lines(point_array,resolution)
         output_array= []
         point_array.each_with_index do |point,index|
-
             if point.type == "C"
-
                 step = 1/resolution.to_f
                 iter = 1
                 while iter <= resolution
-
                     line_point = bez_to_val(point,point_array[index-1],step*iter)
                     output_array << SVGPoint.new("L",line_point)
                     iter += 1
-
                 end
-
-
             else
-
                 output_array << point
-
             end
-
         end
-
         output_array
-
     end
 
     def bez_to_val(point,previous,t)

@@ -1,4 +1,0 @@
-# Controller
-
-class Controller
-end
