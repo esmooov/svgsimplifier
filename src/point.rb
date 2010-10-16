@@ -4,11 +4,11 @@ class Point
 
 	def initialize(x, y=nil)
 		if y == nil
-			@x = (x||"").split(",")[0]
-			@y = (x||"").split(",")[1]
+			@x = (x||"").split(",")[0].to_f
+			@y = (x||"").split(",")[1].to_f
 		else
-			@x = x
-			@y = y
+			@x = x.to_f
+			@y = y.to_f
 		end
 	end
 

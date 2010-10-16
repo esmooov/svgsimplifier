@@ -1,2 +1,5 @@
 *~
 .*.swp
+src/test.output
+src/svgsimple.rb
+tags
