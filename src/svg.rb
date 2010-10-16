@@ -7,8 +7,8 @@ require 'crack'
 class SVG
 
   attr_reader :svg
-  def initialize(source)
 
+  def initialize(source)
     str = ""
     begin
       File.open(source,"r") do |f|
@@ -21,13 +21,10 @@ class SVG
       @svg["svg"] = {}
       @svg["svg"]["path"] = [{"d"=>str}]
     end
-
   end
 
   def to_s
-
     @svg.inspect
-
   end
 
   def convert
@@ -47,6 +44,7 @@ class SVG
       end
     end
   end
+
   def reduce
     @svg["svg"]["path"].each do |dist|
       dist["final_line_array"] = []
@@ -55,15 +53,14 @@ class SVG
       end
     end
   end
-  #private
 
+  #private
   def enpeucker(point_array,start_index,end_index)
     cur_array = point_array[start_index..end_index]
     stack = []
     if cur_array[1..-2].length > 0
       max_point = cur_array[1..-2].max{|a,b| calculate_distance_from_line(cur_array[0],cur_array[-1],cur_array[a]) <=>  calculate_distance_from_line(cur_array[0],cur_array[-1],cur_array[b])}
     else
-
     end
   end
 
@@ -86,22 +83,22 @@ class SVG
   end
 
   def bez_to_val(point,previous,t)
-
     x = previous.p.x + 3*t*(point.r1.x-previous.p.x)+3*t**2*(previous.p.x+point.r2.x-(2*point.r1.x))+t**3*(point.p.x-previous.p.x+3*point.r1.x-3*point.r2.x)
     y = previous.p.y + 3*t*(point.r1.y-previous.p.y)+3*t**2*(previous.p.y+point.r2.y-(2*point.r1.y))+t**3*(point.p.y-previous.p.y+3*point.r1.y-3*point.r2.y)
     new_point = Point.new(x,y)
     new_point
-
   end
 
   def calculate_distance(point_one,point_two)
     Math.sqrt((point_two.y-point_one.y)**2+(point_two.x-point_one.x)**2)
   end
+
   def convert_to_line(point_one,point_two)
     slope = (point_two.y-point_one.y).to_f/(point_two.x-point_one.x).to_f
     offset = point_one.y-(point_one.x*slope)
     {:slope=>slope,:offset=>offset}
   end
+
   def calculate_distance_from_line(endpoint_one,endpoint_two,inspection_point)
     line = self.convert_to_line(endpoint_one,endpoint_two)
     new_slope = -1*(1/line[:slope].to_f)
@@ -113,47 +110,35 @@ class SVG
   end
 
   def to_path_array(path)
-
     path.scan(/[MCL].+z/).flatten()
-
   end
 
   def to_path_point_array(path)
-
     path.gsub!(/(?=[^\s]|^)([A-Za-z])(?=$|[^\s])/){|q| " #{$1} "}
-
     path.gsub!(/  /, ' ')
-
     q = path.split(/ /).reject{|q| q === ""};
-
     stack = []
     points = []
 
     q.each do |f|
-
       if stack.length > 0 && f =~ /[MCLSz]/
         points << to_svg(stack)
         stack = []
       end
-
       stack << f
-
     end
 
     points
-
   end
 
   def to_svg(stack)
-
     if stack[0] == "C"
       a = SVGPoint.new(stack[0],Point.new(stack[3]),Point.new(stack[1]),Point.new(stack[2]))
     else
       a = SVGPoint.new(stack[0],Point.new(stack[1]))
     end
-
   end
 
 end
 
-#vim:set noet sw=2 ts=2:
+# vim:set et sw=2 ts=2:
