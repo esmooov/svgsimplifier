@@ -4,7 +4,7 @@ require 'point'
 
 class SVGPoint
 
-	def initialize(type, p = Point.new(nil, nil), r1 = Point.new(nil, nil), r2 = Point.new(nil, nil), keep = false)		
+	def initialize(type, p = nil, r1 = nil, r2 = nil, keep = true)
 		@type = type
 		@p = p
 		@r1 = r1
@@ -13,7 +13,7 @@ class SVGPoint
 	end
 
 	def to_s
-		return "#{type} #{r1}#{r2}#{p}" 
+		return "#{type} #{r1}#{r2}#{p}"
 	end
 
 	attr_accessor :type, :p, :r1, :r2, :keep
