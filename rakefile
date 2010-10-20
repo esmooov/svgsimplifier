@@ -1,0 +1,12 @@
+task :default => [:tags]
+
+desc "Generate tags file"
+task :tags do
+	puts "Generating tags file..."
+	sh "ctags `find -type f -name '*rb'`"
+end
+
+task :test do
+	# something here
+end
+
