@@ -18,6 +18,7 @@ describe SVG,"svg function" do
         a.svg["svg"]["path"][0]["array_of_paths"][0][2].type.should eql("C")
         a.svg["svg"]["path"][0]["array_of_paths"][0][2].p.x.should eql(5.0)
     end
+
     it "converts all curves to lines" do
         a = SVG.new("M0,0 L 0,5 C 0,0 10,10 5,0 L0,0 z")
         a.convert
