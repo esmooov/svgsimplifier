@@ -1,12 +1,6 @@
-require 'svg_point'
-
-m = SVGPoint.new('M', Point.new(0,0))
-
-l = SVGPoint.new('L', Point.new(1, 1))
-
-c = SVGPoint.new('C', Point.new(4, 4), Point.new(1,2), Point.new(2, 1))
-
-z = SVGPoint.new('z')
-
-puts m.to_s + l.to_s + c.to_s + z.to_s
-
+require "svg.rb"
+a = SVG.new("M 0,0 L 1,0 L 2,1 L 3,3 L 4,0 L 5,1 L 6,3 z")
+puts a
+a.convert
+a.simplify(0.5)
+puts a.to_svg_string("simplified_lines")
