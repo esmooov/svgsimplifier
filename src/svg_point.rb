@@ -13,7 +13,11 @@ class SVGPoint
 	end
 
 	def to_s
-		return "#{type} #{r1}#{r2}#{p}"
+		if keep
+			return "#{type} #{r1}#{r2}#{p}"
+		else
+			return ""
+		end
 	end
 
 	attr_accessor :type, :p, :r1, :r2, :keep
