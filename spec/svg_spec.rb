@@ -1,6 +1,6 @@
  $LOAD_PATH.unshift( File.join( File.dirname(__FILE__),'..', 'src' ) )
 require 'svg'
-
+require 'pp'
 describe SVG,"svg function" do
 
     it "measures the distance between two points" do
@@ -22,7 +22,7 @@ describe SVG,"svg function" do
         a = SVG.new("M0,0 L 0,5 C 0,0 10,10 5,0 L0,0 z")
         a.convert
         a.decurve
-        puts a.svg["svg"]["path"][0]["line_array"][0].inspect 
+        pp a.svg["svg"]["path"][0]["line_array"][0].inspect 
         a.svg["svg"]["path"][0]["line_array"][0].length.should eql(6)
     end
 end
