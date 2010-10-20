@@ -4,18 +4,27 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-Controller	./src/controller.rb	/^class Controller$/;"	c
-CurveConverter	./src/curve_converter.rb	/^class CurveConverter$/;"	c
 LineSimplifier	./src/line_simplifier.rb	/^class LineSimplifier$/;"	c
 Point	./src/point.rb	/^class Point$/;"	c
 SVG	./src/svg.rb	/^class SVG$/;"	c
 SVGPoint	./src/svg_point.rb	/^class SVGPoint$/;"	c
-initialize	./src/point.rb	/^	def initialize(x, y)$/;"	f	class:Point
-initialize	./src/svg.rb	/^	def initialize(source) $/;"	f	class:SVG
-initialize	./src/svg_point.rb	/^	def initialize(type, p = Point.new(nil, nil), r1 = Point.new(nil, nil), r2 = Point.new(nil, nil), keep = false)$/;"	f	class:SVGPoint
-to_path_array	./src/svg.rb	/^	def to_path_array(path)$/;"	f
-to_path_point_array	./src/svg.rb	/^	def to_path_point_array(path)$/;"	f
+bez_to_val	./src/svg.rb	/^  def bez_to_val(point, previous, t)$/;"	f
+calculate_distance	./src/svg.rb	/^  def calculate_distance(point_one, point_two)$/;"	f
+calculate_distance_from_line	./src/svg.rb	/^  def calculate_distance_from_line(endpoint_one, endpoint_two, inspection_point)$/;"	f
+convert	./src/svg.rb	/^  def convert$/;"	f
+convert_to_line	./src/svg.rb	/^  def convert_to_line(point_one, point_two)$/;"	f
+convert_to_lines	./src/svg.rb	/^  def convert_to_lines(point_array, resolution)$/;"	f
+decurve	./src/svg.rb	/^  def decurve$/;"	f
+initialize	./src/point.rb	/^	def initialize(x, y=nil)$/;"	f	class:Point
+initialize	./src/svg.rb	/^  def initialize(source)$/;"	f	class:SVG
+initialize	./src/svg_point.rb	/^	def initialize(type, p = nil, r1 = nil, r2 = nil, keep = true)$/;"	f	class:SVGPoint
+ramer_douglas_peucker	./src/svg.rb	/^  def ramer_douglas_peucker(pointList, epsilon)$/;"	f
+simplify	./src/svg.rb	/^  def simplify(epsilon = 1)$/;"	f
+slope	./src/point.rb	/^	def slope(otherPoint)$/;"	f	class:Point
+to_path_array	./src/svg.rb	/^  def to_path_array(path)$/;"	f
+to_path_point_array	./src/svg.rb	/^  def to_path_point_array(path)$/;"	f
 to_s	./src/point.rb	/^	def to_s$/;"	f	class:Point
-to_s	./src/svg.rb	/^	def to_s$/;"	f
+to_s	./src/svg.rb	/^  def to_s$/;"	f
 to_s	./src/svg_point.rb	/^	def to_s$/;"	f	class:SVGPoint
-to_text_string_with_points	./src/svg.rb	/^	def to_text_string_with_points$/;"	f
+to_svg	./src/svg.rb	/^  def to_svg(stack)$/;"	f
+to_svg_string	./src/svg.rb	/^  def to_svg_string(kind)$/;"	f
